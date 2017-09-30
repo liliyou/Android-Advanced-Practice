@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Android-Advanced-Practice</string>
 
-    <string name="btn_demo_schedulers">bg work (schedulers &amp; concurrency)</string>
+    <string name="btn_demo_schedulers">背景工作＆Concurrency</string>
+    <string name="msg_demo_concurrency_schedulers">這是一個將長時間運行操作放置到後台線程的示範。操作完成後，我們回到主線程。\n因為將長時間運行操作放置到後台線程的，所以多次點擊按鈕後會發現不會被阻止ui操作。\n(Concurrency 為多個Threads輪流去執行)</string>
+    <string name="start_long_operation">需時處理</string>
 </resources>

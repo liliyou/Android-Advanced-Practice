@@ -1,6 +1,7 @@
 package com.practice.advanced.fragment
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,17 @@ class MainFragment : BaseFragment() {
     @OnClick(R.id.btn_demo_schedulers)
     fun demoConcurrencyWithSchedulers() {
         Log.e("click", "demoConcurrencyWithSchedulers")
+//        clickedOn(ConcurrencyWithSchedulersDemoFragment())
     }
+
+//    fun clickedOn(fragment: Fragment) {
+//        val tag = fragment.javaClass.toString()
+//        activity
+//                .supportFragmentManager
+//                .beginTransaction()
+//                .addToBackStack(tag)
+//                .replace(android.R.id.content, fragment, tag)
+//                .commit()
+//    }
 
 }
