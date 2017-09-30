@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Android-Advanced-Practice</string>
+
+    <string name="btn_demo_schedulers">bg work (schedulers &amp; concurrency)</string>
 </resources>
