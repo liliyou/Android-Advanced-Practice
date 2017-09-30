@@ -1,4 +1,4 @@
-package com.practice.advanced
+package com.practice.advanced.fragment
 
 import android.support.v4.app.Fragment
 

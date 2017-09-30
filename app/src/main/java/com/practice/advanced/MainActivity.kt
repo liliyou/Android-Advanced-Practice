@@ -2,6 +2,7 @@ package com.practice.advanced
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.practice.advanced.fragment.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
