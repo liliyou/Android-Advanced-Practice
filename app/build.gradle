@@ -42,6 +42,11 @@ dependencies {
     // leakcanary
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+
+    //butterknife
+    compile "com.jakewharton:butterknife:${butterKnifeVersion}"
+    kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+
 }
 repositories {
     mavenCentral()
