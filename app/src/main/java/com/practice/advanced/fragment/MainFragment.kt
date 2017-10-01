@@ -34,17 +34,17 @@ class MainFragment : BaseFragment() {
     @OnClick(R.id.btn_demo_schedulers)
     fun demoConcurrencyWithSchedulers() {
         Log.e("click", "demoConcurrencyWithSchedulers")
-//        clickedOn(ConcurrencyWithSchedulersDemoFragment())
+        clickedOn(ConcurrencyWithSchedulersDemoFragment())
     }
 
-//    fun clickedOn(fragment: Fragment) {
-//        val tag = fragment.javaClass.toString()
-//        activity
-//                .supportFragmentManager
-//                .beginTransaction()
-//                .addToBackStack(tag)
-//                .replace(android.R.id.content, fragment, tag)
-//                .commit()
-//    }
+    fun clickedOn(fragment: Fragment) {
+        val tag = fragment.javaClass.toString()
+        activity
+                .supportFragmentManager
+                .beginTransaction()
+                .addToBackStack(tag)
+                .replace(android.R.id.content, fragment, tag)
+                .commit()
+    }
 
 }
