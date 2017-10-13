@@ -30,8 +30,8 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
     lateinit var logsList: ListView
 
     private lateinit var unbinder: Unbinder
-    private var adapter: LogAdapter? = null
-    private var logs: MutableList<String>? = null
+    private lateinit var adapter: LogAdapter
+    private lateinit var logs: MutableList<String>
 
 
     @OnClick(R.id.btn_start_operation)
@@ -67,7 +67,9 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
         } catch (e: InterruptedException) {
             _log("Operation was interrupted")
         }
+        _log("Operation complete")
 
+        progress?.setVisibility(View.GONE)
     }
 
     private fun _log(logMsg: String) {
@@ -95,7 +97,7 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
     private fun setupLogger() {
         logs = ArrayList<String>()
         adapter = LogAdapter(activity, ArrayList<String>())
-        logsList?.setAdapter(adapter)
+        logsList.setAdapter(adapter)
     }
 
     private inner class LogAdapter(context: Context, logs: List<String>) : ArrayAdapter<String>(context, R.layout.item_log, R.id.item_log, logs)
