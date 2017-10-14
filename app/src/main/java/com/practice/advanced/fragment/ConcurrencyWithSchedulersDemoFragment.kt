@@ -45,41 +45,40 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
     fun onClickStartOperation() {
         progress?.setVisibility(View.VISIBLE)
         _log("Button Clicked")
-        getObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { result -> _log("On result") },
-                        { error ->
-                            _log(String.format("Boo! Error %s", error.message))
-                            progress.setVisibility(View.INVISIBLE)
-                        },
-                        {
-                            _log("On complete")
-                            progress.setVisibility(View.INVISIBLE)
+        disposables.add(
+                Observable.just(true)
+                        .map { aBoolean ->
+                            _log("Within Observable")
+                            doSomeLongOperation_thatBlocksCurrentThread()
+                            aBoolean
                         }
-                )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                { result -> _log("On result") },
+                                { error ->
+                                    _log(String.format("Boo! Error %s", error.message))
+                                    progress.setVisibility(View.INVISIBLE)
+                                },
+                                {
+                                    _log("On complete")
+                                    progress.setVisibility(View.INVISIBLE)
+                                }
+                        )
+        )
     }
 
-
-    private fun getObservable(): Observable<Boolean> {
-        return Observable.just(true)
-                .map { aBoolean ->
-                    _log("Within Observable")
-                    doSomeLongOperation_thatBlocksCurrentThread()
-                    aBoolean
-                }
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setupLogger()
     }
 
     override fun onCreateView(
             inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var layout = inflater!!.inflate(R.layout.fragment_concurrency_schedulers, container, false)
         unbinder = ButterKnife.bind(this, layout as View)
-        setupLogger()
+
         return layout
     }
 
@@ -87,6 +86,7 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
         super.onDestroyView()
         unbinder?.unbind()
         disposables.clear();
+        disposables.dispose();
     }
 
     private fun doSomeLongOperation_thatBlocksCurrentThread() {
