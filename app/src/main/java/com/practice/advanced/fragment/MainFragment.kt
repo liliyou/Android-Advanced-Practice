@@ -2,7 +2,6 @@ package com.practice.advanced.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +29,9 @@ class MainFragment : BaseFragment() {
         }
         this.btn_demo_debounce.setOnClickListener { v ->
             clickOn(DebounceSearchEmitterFragment())
+        }
+        this.btn_demo_double_binding_textview.setOnClickListener { v ->
+            clickOn(DoubleBindingTextViewFragment())
         }
     }
 
