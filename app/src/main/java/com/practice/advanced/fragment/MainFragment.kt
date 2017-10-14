@@ -23,8 +23,13 @@ class MainFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         this.btn_demo_schedulers.setOnClickListener { v ->
-            Log.e("click", "demoConcurrencyWithSchedulers")
             clickOn(ConcurrencyWithSchedulersDemoFragment())
+        }
+        this.btn_demo_buffer.setOnClickListener { v ->
+            clickOn(BufferDemoFragment())
+        }
+        this.btn_demo_debounce.setOnClickListener { v ->
+            clickOn(DebounceSearchEmitterFragment())
         }
     }
 
