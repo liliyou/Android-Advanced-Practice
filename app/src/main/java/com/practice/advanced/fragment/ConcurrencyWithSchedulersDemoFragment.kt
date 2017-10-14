@@ -8,18 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.ProgressBar
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
-import butterknife.Unbinder
 import com.practice.advanced.R
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-
+import kotlinx.android.synthetic.main.fragment_concurrency_schedulers.*
 
 /**
  * Created by xuyating on 2017/9/30.
@@ -27,64 +21,50 @@ import io.reactivex.schedulers.Schedulers
 
 class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
 
-    @BindView(R.id.progress_operation_running)
-    lateinit var progress: ProgressBar
-
-    @BindView(R.id.list_threading_log)
-    lateinit var logsList: ListView
-
-
-    private lateinit var unbinder: Unbinder
     private lateinit var adapter: LogAdapter
     private lateinit var logs: MutableList<String>
-
     private var disposables = CompositeDisposable()
 
-
-    @OnClick(R.id.btn_start_operation)
-    fun onClickStartOperation() {
-        progress?.setVisibility(View.VISIBLE)
-        _log("Button Clicked")
-        disposables.add(
-                Observable.just(true)
-                        .map { aBoolean ->
-                            _log("Within Observable")
-                            doSomeLongOperation_thatBlocksCurrentThread()
-                            aBoolean
-                        }
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                { result -> _log("On result") },
-                                { error ->
-                                    _log(String.format("Boo! Error %s", error.message))
-                                    progress.setVisibility(View.INVISIBLE)
-                                },
-                                {
-                                    _log("On complete")
-                                    progress.setVisibility(View.INVISIBLE)
-                                }
-                        )
-        )
+    override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_concurrency_schedulers, container, false)
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        this.btn_start_operation.setOnClickListener { v ->
+            this.progress_operation_running.setVisibility(View.VISIBLE)
+            _log("Button Clicked")
+            disposables.add(
+                    Observable.just(true)
+                            .map { aBoolean ->
+                                _log("Within Observable")
+                                doSomeLongOperation_thatBlocksCurrentThread()
+                                aBoolean
+                            }
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    { result -> _log("On result") },
+                                    { error ->
+                                        _log(String.format("Boo! Error %s", error.message))
+                                        this.progress_operation_running.setVisibility(View.INVISIBLE)
+                                    },
+                                    {
+                                        _log("On complete")
+                                        this.progress_operation_running.setVisibility(View.INVISIBLE)
+                                    }
+                            )
+            )
+        }
+
         setupLogger()
+
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var layout = inflater!!.inflate(R.layout.fragment_concurrency_schedulers, container, false)
-        unbinder = ButterKnife.bind(this, layout as View)
-
-        return layout
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        unbinder?.unbind()
         disposables.clear();
         disposables.dispose();
     }
@@ -98,7 +78,6 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
             _log("Operation was interrupted")
         }
         _log("Operation complete")
-
     }
 
     private fun _log(logMsg: String) {
@@ -126,7 +105,7 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
     private fun setupLogger() {
         logs = ArrayList<String>()
         adapter = LogAdapter(activity, ArrayList<String>())
-        logsList.setAdapter(adapter)
+        this.list_threading_log.setAdapter(adapter)
     }
 
     private inner class LogAdapter(context: Context, logs: List<String>) : ArrayAdapter<String>(context, R.layout.item_log, R.id.item_log, logs)
