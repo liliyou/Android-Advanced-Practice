@@ -15,7 +15,11 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
 import com.practice.advanced.R
-import java.util.*
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+
 
 /**
  * Created by xuyating on 2017/9/30.
@@ -29,21 +33,46 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
     @BindView(R.id.list_threading_log)
     lateinit var logsList: ListView
 
+
     private lateinit var unbinder: Unbinder
     private lateinit var adapter: LogAdapter
     private lateinit var logs: MutableList<String>
 
+    private var disposables = CompositeDisposable()
+
 
     @OnClick(R.id.btn_start_operation)
-    fun startLongOperation() {
+    fun onClickStartOperation() {
         progress?.setVisibility(View.VISIBLE)
         _log("Button Clicked")
-        doSomeLongOperation_thatBlocksCurrentThread()
+        getObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { result -> _log("On result") },
+                        { error ->
+                            _log(String.format("Boo! Error %s", error.message))
+                            progress.setVisibility(View.INVISIBLE)
+                        },
+                        {
+                            _log("On complete")
+                            progress.setVisibility(View.INVISIBLE)
+                        }
+                )
+    }
+
+
+    private fun getObservable(): Observable<Boolean> {
+        return Observable.just(true)
+                .map { aBoolean ->
+                    _log("Within Observable")
+                    doSomeLongOperation_thatBlocksCurrentThread()
+                    aBoolean
+                }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -57,6 +86,7 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         unbinder?.unbind()
+        disposables.clear();
     }
 
     private fun doSomeLongOperation_thatBlocksCurrentThread() {
@@ -69,7 +99,6 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
         }
         _log("Operation complete")
 
-        progress?.setVisibility(View.GONE)
     }
 
     private fun _log(logMsg: String) {

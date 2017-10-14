@@ -4,6 +4,7 @@ buildscript {
     ext {
         kotlin_version = '1.1.51'
         butterKnifeVersion = '8.8.1'
+        supportLibVersion = '26.+'
     }
     repositories {
         jcenter()
@@ -20,6 +21,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+
     }
 
 }
