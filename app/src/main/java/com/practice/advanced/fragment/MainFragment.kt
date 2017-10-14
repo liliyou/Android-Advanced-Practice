@@ -28,6 +28,9 @@ class MainFragment : BaseFragment() {
         this.btn_demo_buffer.setOnClickListener { v ->
             clickOn(BufferDemoFragment())
         }
+        this.btn_demo_debounce.setOnClickListener { v ->
+            clickOn(DebounceSearchEmitterFragment())
+        }
     }
 
     fun clickOn(fragment: Fragment) {
