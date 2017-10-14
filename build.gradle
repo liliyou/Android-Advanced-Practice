@@ -1,7 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.1.51'
+    ext {
+        kotlin_version = '1.1.51'
+        butterKnifeVersion = '8.8.1'
+        supportLibVersion = '26.+'
+    }
     repositories {
         jcenter()
     }
@@ -17,7 +21,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+
     }
+
 }
 
 task clean(type: Delete) {
