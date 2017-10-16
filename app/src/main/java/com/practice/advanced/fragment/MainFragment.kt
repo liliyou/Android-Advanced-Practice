@@ -40,6 +40,10 @@ class MainFragment : BaseFragment() {
         this.btn_demo_rxbus.setOnClickListener { v ->
             clickOn(RxBusDemoFragment())
         }
+        this.btn_demo_form_validation_combinel.setOnClickListener { v ->
+            clickOn(FormValidationCombineLatestFragment())
+        }
+
     }
 
     fun clickOn(fragment: Fragment) {

@@ -5,8 +5,9 @@
     <string name="btn_demo_buffer">累積呼叫次數</string>
     <string name="btn_demo_debounce">搜索詞句監聽 (去除誤打)</string>
     <string name="btn_demo_double_binding_textview">雙重綁定 (PublishProcessor)</string>
-    <string name="btn_demo_polling">循環呼叫＆ RxJava</string>
+    <string name="btn_demo_polling">輪詢（Polling）呼叫＆ RxJava</string>
     <string name="btn_demo_rxbus">Event Bus ＆ RxJava</string>
+    <string name="btn_demo_form_validation_combinel">表單驗證 （CombineLatest）</string>
 
     <string name="msg_demo_concurrency_schedulers">這是一個將長時間運行操作放置到後台線程的示範。操作完成後，我們回到主線程。\n因為將長時間運行操作放置到後台線程的，所以多次點擊按鈕後會發現不會被阻止ui操作。\n(Concurrency 為多個Threads輪流去執行)</string>
     <string name="msg_demo_buffer">這是一個“緩存”積事件的案例。連續多次點擊下面的按鈕，會顯示兩秒內的點擊次數。</string>
@@ -14,6 +15,7 @@
     <string name="msg_demo_doublebinding">根據輸入自動更新，使用這個技術實現雙向綁定，更有效地使用 View Model。(沒有使用 butterknife 所以與原作不同)</string>
     <string name="msg_demo_polling">輪詢（Polling）範例\n簡單輪詢：顯示後台（模擬）輪流進行網絡呼叫。(概念是，定時發出詢問，依序詢問每一個週邊裝置是否需要其服務，有即給予服務，服務結束後再問下一個週邊，接著不斷週而復始)</string>
     <string name="msg_demo_rxbus_1">點擊下面的按鈕，RxBus 將會監聽到這些事件</string>
+    <string name="msg_demo_form_comb_latest">使用 combineLatest 監視多個狀態。當全部輸入欄為有效的時候，提交按鈕自動亮起</string>
 
     <string name="start_long_operation">需時處理</string>
     <string name="tap_me">點擊我</string>
@@ -26,4 +28,8 @@
     <string name="start_increasingly_delayed_polling">開始遞增輪詢</string>
     <string name="one">1</string>
     <string name="tap">tap!</string>
+    <string name="enter_a_valid_email_below">輸入有效的電子郵件:</string>
+    <string name="password_than_8_chrs"><![CDATA[密碼 (> than 8 chrs):]]></string>
+    <string name="number_between_1_amp_100"><![CDATA[編號 (between 1 & 100):]]></string>
+    <string name="submit">遞交</string>
 </resources>
