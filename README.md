@@ -3,7 +3,7 @@ Learning RxJava for Android by example
 
 這是一個使用 Android 使用 RxJava 和 Kotlin 的練習 (主要專注在 Rxjava 應用)，  
 目前是參考：https://github.com/kaushikgopal/RxJava-Android-Samples  
-將程式轉成 Kotlin 並且使用 kotlin-android-extensions 作 ViewBuilding  
+將程式轉成 Kotlin 並且使用 kotlin-android-extensions 作 DataBinding  
 
 #### Examples:
 1. 背景工作＆Concurrency
