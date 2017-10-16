@@ -11,7 +11,9 @@ import android.widget.ArrayAdapter
 import com.practice.advanced.R
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Function
 import kotlinx.android.synthetic.main.fragment_polling.*
+import org.reactivestreams.Publisher
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -41,9 +43,9 @@ class PollingFragment : BaseFragment() {
         this.btn_start_simple_polling.setOnClickListener { v ->
 
             val pollCount = POLL_COUNT
-            //doOnSubscribe 在onNext之前做初始化操作。
-            //interval 固定的时间间隔发射一个无限递增的整数序列
-            //take是取前几个发射的数据，或者在前一段时间内发射的数据。因為 interval 永远执行
+            // doOnSubscribe在onNext之前做初始化操作。
+            // interval 固定的時間間隔發射一個無限遞增的整數序列
+            // take 是取前幾個發射的數據，或者在前一段時間內發射的數據。因為 interval 永遠執行
             val d = Flowable
                     .interval(INITIAL_DELAY.toLong(), POLLING_INTERVAL.toLong(), TimeUnit.MILLISECONDS)
                     .map<Any> { it -> this.doNetworkCallAndGetStringResult(it) }
@@ -60,7 +62,62 @@ class PollingFragment : BaseFragment() {
 
             disposables.add(d)
         }
+
+        this.btn_start_increasingly_delayed_polling.setOnClickListener { v ->
+
+            setupLogger()
+            val pollingInterval = POLLING_INTERVAL
+            val pollCount = POLL_COUNT
+
+            _log(
+                    String.format(
+                            Locale.US, "Start increasingly delayed polling now time: [xx:%02d]", getSecondHand()))
+
+            disposables.add(
+                    Flowable.just(1L)
+                            .repeatWhen(RepeatWithDelay(pollCount, pollingInterval))
+                            .subscribe(
+                                    { o ->
+                                        _log(
+                                                String.format(
+                                                        Locale.US,
+                                                        "Executing polled task now time : [xx:%02d]",
+                                                        getSecondHand()))
+                                    }
+                            ) { e -> _log("arrrr. Error") })
+        }
     }
+
+    //public static class RepeatWithDelay
+    inner class RepeatWithDelay internal constructor(private val _repeatLimit: Int, private val _pollingInterval: Int) : Function<Flowable<Any>, Publisher<Long>> {
+        private var _repeatCount = 1
+
+        // this is a notificationhandler, all we care about is
+        // the emission "type" not emission "content"
+        // only onNext triggers a re-subscription
+
+        @Throws(Exception::class)
+        override fun apply(inputFlowable: Flowable<Any>): Publisher<Long> {
+            // it is critical to use inputObservable in the chain for the result
+            // ignoring it and doing your own thing will break the sequence
+
+            return inputFlowable.flatMap(
+                    Function<Any, Publisher<Long>> {
+                        if (_repeatCount >= _repeatLimit) {
+                            // terminate the sequence cause we reached the limit
+                            _log("Completing sequence")
+                            return@Function Flowable.empty()
+                        }
+
+                        // since we don't get an input
+                        // we store state in this handler to tell us the point of time we're firing
+                        _repeatCount++
+
+                        Flowable.timer((_repeatCount * _pollingInterval).toLong(), TimeUnit.MILLISECONDS)
+                    })
+        }
+    }
+
 
     private fun doNetworkCallAndGetStringResult(attempt: Long): String {
         try {
