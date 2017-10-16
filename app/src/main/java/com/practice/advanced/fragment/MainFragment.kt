@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.practice.advanced.R
+import com.practice.advanced.fragment.rxbus.RxBusDemoFragment
 import kotlinx.android.synthetic.main.fragment_main.*
 
 /**
@@ -33,9 +34,11 @@ class MainFragment : BaseFragment() {
         this.btn_demo_double_binding_textview.setOnClickListener { v ->
             clickOn(DoubleBindingTextViewFragment())
         }
-
         this.btn_demo_polling.setOnClickListener { v ->
             clickOn(PollingFragment())
+        }
+        this.btn_demo_rxbus.setOnClickListener { v ->
+            clickOn(RxBusDemoFragment())
         }
     }
 
