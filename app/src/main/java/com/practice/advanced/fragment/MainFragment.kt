@@ -33,6 +33,10 @@ class MainFragment : BaseFragment() {
         this.btn_demo_double_binding_textview.setOnClickListener { v ->
             clickOn(DoubleBindingTextViewFragment())
         }
+
+        this.btn_demo_polling.setOnClickListener { v ->
+            clickOn(PollingFragment())
+        }
     }
 
     fun clickOn(fragment: Fragment) {
