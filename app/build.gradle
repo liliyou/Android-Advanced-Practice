@@ -47,6 +47,9 @@ dependencies {
 
     // Rx rxbinding
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+
+    // Rxrelay
+    compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
 }
 repositories {
     mavenCentral()
