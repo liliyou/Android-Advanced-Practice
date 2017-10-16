@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by xuyating on 2017/10/16.
  */
-class RxBusDemo_Bottom3Fragment : BaseFragment() {
+class RxBusDemo_Bottom2Fragment : BaseFragment() {
 
     private lateinit var rxBus: RxBus
     private lateinit var disposables: CompositeDisposable
@@ -37,25 +37,34 @@ class RxBusDemo_Bottom3Fragment : BaseFragment() {
         super.onStart()
         disposables = CompositeDisposable()
 
-        val tapEventEmitter = rxBus.asFlowable().publish()
+        //观察同一条数据流
+        val tapEventEmitter = rxBus.asFlowable().share()
 
-        disposables
-                .add(
-                        tapEventEmitter.subscribe { event ->
+        disposables.add(
+                tapEventEmitter.subscribe(
+                        { event ->
                             if (event is RxBusDemoFragment.TapEvent) {
                                 _showTapText()
                             }
-                        })
+                        }))
+        /*****************/
+//        val debouncedEmitter = tapEventEmitter.debounce(1, TimeUnit.SECONDS)
+//        val debouncedBufferEmitter = tapEventEmitter.buffer(debouncedEmitter)
+//
+//        disposables.add(
+//                debouncedBufferEmitter
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(
+//                                { taps -> _showTapCount(taps.size) }))
+
+        /*****************/
 
         disposables.add(
                 tapEventEmitter
-                        .publish { stream -> stream.buffer(stream.debounce(1, TimeUnit.SECONDS)) }
+                        .buffer(tapEventEmitter.debounce(1, TimeUnit.SECONDS))
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { taps ->
-                            _showTapCount(taps.size)
-                        })
-
-        disposables.add(tapEventEmitter.connect())
+                        .subscribe(
+                                { taps -> _showTapCount(taps.size) }))
     }
 
     override fun onStop() {

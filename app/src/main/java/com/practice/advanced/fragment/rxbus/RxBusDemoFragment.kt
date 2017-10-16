@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * Created by xuyating on 2017/10/16.
+ *
  */
 
 class RxBusDemoFragment : BaseFragment() {
@@ -34,9 +35,14 @@ class RxBusDemoFragment : BaseFragment() {
                 .supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.demo_rxbus_frag_1, RxBusDemo_TopFragment())
+                //RxBusDemo_Bottom1Fragment 點擊後顯示Tap
+//                .replace(R.id.demo_rxbus_frag_2,  RxBusDemo_Bottom1Fragment())
+                //RxBusDemo_Bottom2Fragment 點擊後顯示Tap，且加入暫存取次數
+                .replace(R.id.demo_rxbus_frag_2,  RxBusDemo_Bottom2Fragment())
+                //RxBusDemo_Bottom3Fragment 點擊後顯示Tap，且加入暫存取次數 share => publish
                 .replace(R.id.demo_rxbus_frag_2, RxBusDemo_Bottom3Fragment())
-                //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom2Fragment())
-                //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom1Fragment())
+
+
                 .commit()
     }
 

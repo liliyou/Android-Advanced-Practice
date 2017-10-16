@@ -16,10 +16,11 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by xuyating on 2017/10/16.
  */
-class RxBusDemo_Bottom3Fragment : BaseFragment() {
+class RxBusDemo_Bottom1Fragment : BaseFragment() {
 
     private lateinit var rxBus: RxBus
     private lateinit var disposables: CompositeDisposable
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -37,25 +38,16 @@ class RxBusDemo_Bottom3Fragment : BaseFragment() {
         super.onStart()
         disposables = CompositeDisposable()
 
-        val tapEventEmitter = rxBus.asFlowable().publish()
-
-        disposables
-                .add(
-                        tapEventEmitter.subscribe { event ->
-                            if (event is RxBusDemoFragment.TapEvent) {
-                                _showTapText()
-                            }
-                        })
-
         disposables.add(
-                tapEventEmitter
-                        .publish { stream -> stream.buffer(stream.debounce(1, TimeUnit.SECONDS)) }
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { taps ->
-                            _showTapCount(taps.size)
-                        })
+                rxBus
+                        .asFlowable()
+                        .subscribe(
+                                { event ->
+                                    if (event is RxBusDemoFragment.TapEvent) {
+                                        _showTapText()
+                                    }
+                                }))
 
-        disposables.add(tapEventEmitter.connect())
     }
 
     override fun onStop() {

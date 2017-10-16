@@ -16,6 +16,7 @@ class RxBus {
     }
 
     fun asFlowable(): Flowable<Any> {
+        //Drop就是直接把存不下的事件丢弃,Latest就是只保留最新的事件
         return _bus.toFlowable(BackpressureStrategy.LATEST)
     }
 
